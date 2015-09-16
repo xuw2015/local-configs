@@ -1,0 +1,8 @@
+[user]
+	name = George Wang
+	email = xuw2015@gmail.com
+[core]
+	editor = vim
+[sendemail]
+	smtpserver = /usr/bin/msmtp
+	from = xuw@redhat.com

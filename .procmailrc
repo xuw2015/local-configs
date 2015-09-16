@@ -1,0 +1,5 @@
+MAILDIR=$HOME/.mail
+
+:0
+* ^(To|Cc): .*
+redhat/mbox/

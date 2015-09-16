@@ -1,0 +1,135 @@
+# Set mail from header
+set use_from=yes
+set realname="George Wang"
+set from="George Wang <xuw@redhat.com>"
+
+# Folders
+#set spoolfile=imaps://xuw:1qaz2wsxE!@@mail.corp.redhat.com/test
+set spoolfile="~/.mail/redhat/mbox"
+set folder=~/.mail/redhat
+set record="=testsend"
+set postponed="=postponed"
+#set mbox_type=mbox           # Mailbox type
+set mbox_type=maildir        # Mailbox type, split large file to little files
+set move=no                  # Don't move mail from spool
+
+# Disable beep
+set beep=no
+set pipe_split=yes	#pipe messages one by one
+
+# Set mail boxes
+mailboxes =mbox
+mailboxes =postponed
+mailboxes =sent
+
+mailboxes =rhkernel-list
+mailboxes =china-list
+mailboxes =china
+
+
+set sendmail="/usr/bin/msmtp"	# use msmtp rather than sendmail.
+set editor="vim"		# use vim as editor
+
+set askcc	# prompt for cc's
+set help	# show help on first line of display
+set pager_stop	# don't go to next message at end of message
+unset mark_old	# don't mark unread messages as Old
+set pager_context=1		# display one line context on pageup/pagedown
+set quit=ask-yes		# confirm quit, default to yes
+set include=yes			# include original message in reply
+#set ispell="aspell -e -c"	# spell checker
+
+set sort=threads
+set sort_aux='last-date-received'
+
+# Set send charset
+set send_charset="us-ascii:utf-8"
+
+# To recognize reply messages
+set reply_regexp="^(re([\[0-9\]+])*|aw|回复|答复)(:|:)[ \t]*"
+
+# Include attachments in forward emails
+set mime_forward=yes
+set mime_forward_rest=yes
+
+# Traditional Fwd: subject
+set forward_format="Fwd: %s"
+
+# Display settings
+set index_format="%4C %Z %{%b %d} %?X?%X& ? %-18.18L [%4c] %s"
+
+# Alias setup
+set alias_file= ~/.mutt/aliases
+set sort_alias= alias
+set reverse_alias=yes
+source $alias_file
+
+# 
+# Key bindings
+#
+bind index gg first-entry
+bind index G last-entry
+bind index \cf next-page
+bind index \cb previous-page
+bind index \Cx sync-mailbox
+bind index r reply
+bind index = parent-message
+
+bind pager j next-line
+bind pager k previous-line
+bind pager <Up> previous-line
+bind pager <Down> next-line
+bind pager gg top
+bind pager G bottom
+bind pager n next-entry
+bind pager p previous-entry
+bind pager = parent-message
+bind pager N search-next
+
+
+bind index,pager R group-reply
+bind index,pager S resend-message
+
+bind generic zt current-top
+bind generic zb current-bottom
+bind generic zz current-middle
+bind editor <space> noop
+
+# Mark all as read
+macro index A "T.*\n;WN;^t.*\n" "Mark all as read"
+
+#
+# Color setup
+#
+color header brightred black subject
+color hdrdefault brightwhite black
+color quoted brightgreen black
+color status black cyan
+color indicator default green
+# email address
+color body yellow default [-a-z_0-9.]+@[-a-z_0-9.]+
+#color header brightyellow default [-a-z_0-9.]+@[-a-z_0-9.]+
+# URLS
+color body brightmagenta default "(ftp|http)://[^ ]+"
+# mails cced myself
+color index brightblue black   '~c xuw@redhat.com'
+# mails to myself
+color index brightyellow black   '~t xuw@redhat.com'
+# mails sent from myself
+color index cyan black   '~f xuw@redhat.com'
+# from fs devs
+color index brightgreen default '~f sandeen@redhat.com'
+
+
+# Quit from index view and return to mailboxes view
+macro index q '<change-folder>?<toggle-mailboxes>'
+macro browser q '<exit><quit>'
+
+# Run fetchmail by hitting key of ~
+macro index ~ "!fetchmail -k -m 'procmail -d %T'\r"
+macro pager ~ "!fetchmail -k -m 'procmail -d %T'\r"
+
+#
+# Auto view
+#
+auto_view text/html application/pdf application/msword application/x-shellscript
